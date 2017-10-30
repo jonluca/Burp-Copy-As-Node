@@ -94,11 +94,11 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 
 			// Append body to options object
 			if (bodyExists) {
-				node.append("    body: dataString");
+				node.append("    body: ").append(prefix).append("dataString");
 			}
 			node.append("\n}");
 			//Generate a unique request for each one
-			node.append("\nrequest(").append(prefix).append("options, callback)");
+			node.append("\nrequest(").append(prefix).append("options, callback)\n\n");
 		}
 
 		// Finally end with
