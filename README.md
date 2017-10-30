@@ -7,6 +7,9 @@ Accessed via a Request -> Action -> Copy as Node.js Request
 <img src="https://i.imgur.com/Qlo3mto.png">
 
 ## Installation
+
+First save the interfaces from Burp Suite to the src/burp folder (should be .java files that begin with I...). These can be found in Burp Suite at Extender -> APIs -> Save Interface Files
+
 Build the jar using `ant`, then install by navigating to Extender -> Extensions -> Add and select the jar
 
 Please note the output should be saved in it's own folder, as it requires `request` to be in `node_modules`.
