@@ -61,3 +61,6 @@ src/burp/I*
 
 .idea/*
 .idea/
+
+out/*
+build/*

@@ -15,6 +15,10 @@ import java.util.ListIterator;
 
 /*
 Heavily influenced by https://github.com/PortSwigger/copy-as-python-requests/
+Shell code taken from above and modified for node requests
+JonLuca De Caro - 10/30/17
+
+I found the decoded data string to be a little buggy, so I removed that functionality. The data string is preserved as a url encoded object
  */
 public class BurpExtender implements IBurpExtender, IContextMenuFactory, ClipboardOwner {
 	private IExtensionHelpers helpers;
