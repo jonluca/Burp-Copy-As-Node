@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_burp-extension" default="compile.module.burp-extension">
+  <dirname property="module.burp-extension.basedir" file="${ant.file.module_burp-extension}"/>
+  
+  <property name="module.jdk.home.burp-extension" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.burp-extension" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.burp-extension" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.burp-extension" value="-encoding UTF-8 -source 1.8 -target 1.8 ${compiler.args}"/>
+  
+  <property name="burp-extension.output.dir" value="${module.burp-extension.basedir}/out/production/Burp-Extension"/>
+  <property name="burp-extension.testoutput.dir" value="${module.burp-extension.basedir}/out/test/Burp-Extension"/>
+  
+  <path id="burp-extension.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="burp-extension.module.production.classpath">
+    <path refid="${module.jdk.classpath.burp-extension}"/>
+  </path>
+  
+  <path id="burp-extension.runtime.production.module.classpath">
+    <pathelement location="${burp-extension.output.dir}"/>
+  </path>
+  
+  <path id="burp-extension.module.classpath">
+    <path refid="${module.jdk.classpath.burp-extension}"/>
+    <pathelement location="${burp-extension.output.dir}"/>
+  </path>
+  
+  <path id="burp-extension.runtime.module.classpath">
+    <pathelement location="${burp-extension.testoutput.dir}"/>
+    <pathelement location="${burp-extension.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.burp-extension">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.burp-extension">
+    <patternset refid="excluded.from.module.burp-extension"/>
+  </patternset>
+  
+  <path id="burp-extension.module.sourcepath">
+    <dirset dir="${module.burp-extension.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.burp-extension" depends="compile.module.burp-extension.production,compile.module.burp-extension.tests" description="Compile module Burp-Extension"/>
+  
+  <target name="compile.module.burp-extension.production" depends="register.custom.compilers" description="Compile module Burp-Extension; production classes">
+    <mkdir dir="${burp-extension.output.dir}"/>
+    <javac2 destdir="${burp-extension.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.burp-extension}/javac">
+      <compilerarg line="${compiler.args.burp-extension}"/>
+      <bootclasspath refid="burp-extension.module.bootclasspath"/>
+      <classpath refid="burp-extension.module.production.classpath"/>
+      <src refid="burp-extension.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.burp-extension"/>
+    </javac2>
+    
+    <copy todir="${burp-extension.output.dir}">
+      <fileset dir="${module.burp-extension.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.burp-extension.tests" depends="register.custom.compilers,compile.module.burp-extension.production" description="compile module Burp-Extension; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.burp-extension" description="cleanup module">
+    <delete dir="${burp-extension.output.dir}"/>
+    <delete dir="${burp-extension.testoutput.dir}"/>
+  </target>
+</project>
