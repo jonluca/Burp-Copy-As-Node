@@ -26,6 +26,7 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 	private final static String NAME = "Copy as Node.js Request";
 	private final static String[] NODE_ESCAPE = new String[256];
 
+	// Generate escape sequences for validation checking
 	static {
 		for (int i = 0x00; i <= 0xFF; i++)
 			NODE_ESCAPE[i] = String.format("\\x%02x", i);
@@ -40,6 +41,7 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 
 	@Override
 	public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
+		// Internal burp settings and helpers
 		helpers = callbacks.getHelpers();
 		callbacks.setExtensionName(NAME);
 		callbacks.registerContextMenuFactory(this);
@@ -63,16 +65,17 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 	private void copyMessages(IHttpRequestResponse[] messages) {
 		StringBuilder node = new StringBuilder("var request = require('request');\n");
 		int i = 0;
-
+		// Generate a new request for every regular http request
 		for (IHttpRequestResponse message : messages) {
 			IRequestInfo ri = helpers.analyzeRequest(message);
 			byte[] req = message.getRequest();
+			// Generate unique object names, all prepended with burp#_
 			String prefix = "burp" + i++ + "_";
 			List<String> headers = ri.getHeaders();
 
 			// Create cookie object, if it exists
 			boolean cookiesExist = processCookies(prefix, node, headers);
-			// If data exists, add it to options
+			// Create dataString object, if it exists
 			boolean bodyExists = processBody(prefix, node, req, ri);
 			// Generate headers
 			node.append("var ").append(prefix).append("headers = {\n    ");
@@ -80,8 +83,8 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 			if (cookiesExist) {
 				node.append(",\n    'Cookie': ").append(prefix).append("cookie");
 			}
-
 			node.append("\n}");
+
 			// Generate options
 			node.append("\n\n").append("var ").append(prefix).append("options = {\n    url: \"");
 			node.append(escapeQuotes(ri.getUrl().toString()));
@@ -89,13 +92,17 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 			node.append(ri.getMethod().toLowerCase());
 			node.append("\",\n");
 
+			// Append body to options object
 			if (bodyExists) {
 				node.append("    body: dataString");
 			}
 			node.append("\n}");
+			//Generate a unique request for each one
+			node.append("\nrequest(").append(prefix).append("options, callback)");
 		}
+
+		// Finally end with
 		node.append("\n\nfunction callback(error, response, body) {\n" + "    if (!error && response.statusCode == 200) {\n" + "        console.log(body);\n" + "    }\n" + "}\n");
-		node.append("\nrequest(options, callback)");
 
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(node.toString()), this);
 	}
