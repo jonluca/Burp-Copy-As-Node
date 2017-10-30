@@ -9,6 +9,9 @@ Accessed via a Request -> Action -> Copy as Node.js Request
 ## Installation
 Build the jar using `ant`, then install by navigating to Extender -> Extensions -> Add and select the jar
 
+Please note the output should be saved in it's own folder, as it requires `request` to be in `node_modules`.
+ 
+This can be installed with `npm i request`.
 ## Sample
 
 The output from the above screenshot would look like: 
