@@ -90,13 +90,13 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 			node.append(escapeQuotes(ri.getUrl().toString()));
 			node.append("\",\n    headers: ").append(prefix).append("headers,\n    method: \"");
 			node.append(ri.getMethod().toLowerCase());
-			node.append("\",");
+			node.append("\",\n");
 
 			// Append body to options object
 			if (bodyExists) {
-				node.append("    body: ").append(prefix).append("dataString");
+				node.append("    body: ").append(prefix).append("bodyString\n");
 			}
-			node.append("\n}");
+			node.append("}");
 			//Generate a unique request for each one
 			node.append("\nrequest(").append(prefix).append("options, callback)\n\n");
 		}
