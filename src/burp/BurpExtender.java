@@ -99,11 +99,8 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
             }
             node.append("}");
             //Generate a unique request for each one
-            node.append("\nrequest(").append(prefix).append("options, callback)\n\n");
+            node.append("\nrequest(").append(prefix).append("options)\n\n");
         }
-
-        // Finally end with
-        node.append("\n\nfunction callback(error, response, body) {\n" + "    if (!error && response.statusCode == 200) {\n" + "        console.log(body);\n" + "    }\n" + "}\n");
 
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(node.toString()), this);
     }
