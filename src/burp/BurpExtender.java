@@ -28,10 +28,12 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 
     // Generate escape sequences for validation checking
     static {
-        for (int i = 0x00; i <= 0xFF; i++)
+        for (int i = 0x00; i <= 0xFF; i++) {
             NODE_ESCAPE[i] = String.format("\\x%02x", i);
-        for (int i = 0x20; i < 0x80; i++)
+        }
+        for (int i = 0x20; i < 0x80; i++) {
             NODE_ESCAPE[i] = String.valueOf((char) i);
+        }
         NODE_ESCAPE['\n'] = "\\n";
         NODE_ESCAPE['\r'] = "\\r";
         NODE_ESCAPE['\t'] = "\\t";
