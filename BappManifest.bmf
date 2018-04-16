@@ -1,0 +1,12 @@
+Uuid: e170472f83ef4da1bca5897203b6b33d
+ExtensionType: 1
+Name: Copy as Node Request
+RepoName: copy-as-node-request
+ScreenVersion: 1.0
+SerialVersion: 1
+MinPlatformVersion: 0
+ProOnly: False
+Author: JonLuca DeCaro
+ShortDescription: Copies the selected requests as Node.JS request code.
+EntryPoint: build/libs/copy-as-node-request.jar
+BuildCommand: gradle jar
