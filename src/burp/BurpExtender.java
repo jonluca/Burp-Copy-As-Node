@@ -68,7 +68,7 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
     private void copyMessages(IHttpRequestResponse[] messages) {
         StringBuilder node = new StringBuilder("var request = require('request');\n");
         // disable cert checks so things like self-signed certs work
-        node.append("process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0");
+        node.append("process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0\n");
         int i = 0;
         // Generate a new request for every regular http request
         for (IHttpRequestResponse message : messages) {
