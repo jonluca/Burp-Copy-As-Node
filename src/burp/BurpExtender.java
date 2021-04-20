@@ -67,6 +67,8 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 
     private void copyMessages(IHttpRequestResponse[] messages) {
         StringBuilder node = new StringBuilder("var request = require('request');\n");
+        // disable cert checks so things like self-signed certs work
+        node.append("process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0\n");
         int i = 0;
         // Generate a new request for every regular http request
         for (IHttpRequestResponse message : messages) {
@@ -101,7 +103,7 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
             }
             node.append("}");
             //Generate a unique request for each one
-            node.append("\nrequest(").append(prefix).append("options)\n\n");
+            node.append("\nrequest(").append(prefix).append("options, function (error, response, body) {\nconsole.log('statusCode:', response && response.statusCode)\nconsole.log('error: ', error)\nconsole.log('body: ', body)\n})\n\n");
         }
 
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(node.toString()), this);
