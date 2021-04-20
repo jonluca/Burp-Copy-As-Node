@@ -118,9 +118,9 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
             iter.remove();
             cookiesExist = true;
             String cookie = header.substring(8);
-            node.append("\n").append("var ").append(prefix).append("cookie = '");
+            node.append("\n").append("var ").append(prefix).append("cookie = \"");
             node.append(escapeQuotes(cookie));
-            node.append("'\n");
+            node.append("\"\n");
         }
         return cookiesExist;
     }
